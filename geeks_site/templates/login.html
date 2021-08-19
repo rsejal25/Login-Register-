@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset='utf-8'>
+</head>
+<body>
+<center>
+<script>
+function myfunction(e)
+{
+alert('heii');
+let xhr=new XMLHttpRequest();
+let username=document.getElementById('un').value.trim();
+let password=document.getElementById('pswd').value;
+//let email=document.getElementById('eml').value;
+let json=JSON.stringify({
+"email":username,
+"password":password
+});
+
+xhr.open('POST','/login1');
+xhr.onreadystatechange=function(){
+if(xhr.readyState==4&&xhr.status==200)
+{
+alert('hello');
+let responseObj=xhr.responseText;
+responseObj=JSON.parse(responseObj);
+alert(responseObj.success)
+if(responseObj.status==='success')
+{
+console.log(responseObj.access);
+localStorage.setItem('unique_token',responseObj.access);
+document.getElementById('result').innerHTML="Successfully logged in";
+//document.getElementById("getUsers").submit();
+}
+else
+{
+document.getElementById("error").innerHTML="Invalid username or password";
+}
+}
+}
+xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+//xhr.responseType='json'
+xhr.send(json);
+}
+</script>
+<center>
+<h1>Login</h1>
+<div id='error' style='color:red'></div>
+<div id='result' style='green'></div>
+Enter your email <input type='text'   id='un'><br>
+Enter your Password <input type='password'   id='pswd'><br>
+<button type='button' onclick='myfunction(this)'>Login</button>
+</center>
+<form action='/user1' id='getUsers'></form>
+</body>
+</html>
